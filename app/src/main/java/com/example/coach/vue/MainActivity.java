@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     poids = Integer.parseInt(txtPoids.getText().toString());
                     taille = Integer.parseInt(txtTaille.getText().toString());
                     age = Integer.parseInt(txtAge.getText().toString());
+                    afficheResult(poids, taille, age, sexe);
                 }catch(Exception e){}
                 if(rdHomme.isChecked()){
                     sexe = 1;
