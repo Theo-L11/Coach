@@ -1,5 +1,7 @@
 package com.example.coach.modele;
 
+import com.example.coach.outils.Serializer;
+
 public class Profil {
 
     // declarations
