@@ -1,84 +1,91 @@
 package com.example.coach.modele;
 
-import com.example.coach.outils.Serializer;
+import java.io.Serializable;
+import java.util.Date;
 
-public class Profil {
+/**
+ * Classe métier Profil
+ * contient les informations du profil
+ */
+public class Profil implements Serializable {
+    // constantes
+    private static final Integer minFemme = 15; // maigre si en dessous
+    private static final Integer maxFemme = 30; // gros si au dessus
+    private static final Integer minHomme = 10; // maigre si en dessous
+    private static final Integer maxHomme = 25; // gros si au dessus
+    private Integer poids;
+    private Integer taille;
+    private Integer age;
+    private Integer sexe;
 
-    // declarations
-    private Integer poids, taille, sexe, age;
+    private Date dateMesure;
     private float img = 0;
     private String message = "";
 
-    // constante
-    private static final Integer minFemme = 15; // maigre i en dessous
-    private static final Integer minHomme = 10; // maigre si en dessous
-    private static final Integer maxFemme = 30; // gros si au dessus
-    private static final Integer maxHomme = 25; // gros si au dessus
-
     /**
-     * constructeur valorise les propriétés
+     * Constructeur : valorise directement les proriétés poids, taille, age, sexe
      * @param poids
      * @param taille
-     * @param sexe 1 pour les hommes, 0 pour les femmes
      * @param age
+     * @param sexe 1 pour homme, 0 pour femme
      */
-    public Profil(int poids, int taille, int sexe, int age) {
-        this.poids = poids;
-        this.taille = taille;
-        this.sexe = sexe;
-        this.age = age;
-    }
-
-    public int getPoids() {
-        return poids;
-    }
-
-    public int getTaille() {
-        return taille;
-    }
-
-    public int getSexe() {
-        return sexe;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    /**
-     * retourne img apres l'avoir calculé s'il est vide
-     * @return img
-     */
-    public float getImg() {
-        if(img == 0){
-            float tailleCm = ((float)taille)/100;
-            img = (float)((1.2 * poids/(tailleCm*tailleCm)) + (0.23 * age) - (10.83 * sexe) - 5.4);
+    public Profil(Date dateMesure, Integer poids, Integer taille, Integer age, Integer sexe) {
+            this.poids = poids;
+            this.taille = taille;
+            this.age = age;
+            this.sexe = sexe;
+            this.dateMesure = dateMesure;
         }
-        return img;
-    }
 
-    /**
-     * retourne le message a afficher en fonction de l'img
-     * @return message
-     */
-    public String getMessage() {
-        if(message.equals("")){
-            message = "normal";
-            Integer min = minFemme, max = maxFemme;
-            if(sexe == 1){
-                min = minHomme;
-                max = maxHomme;
+        public Integer getPoids() {
+            return poids;
+        }
+        public Integer getTaille() {
+            return taille;
+        }
+        public Integer getAge() {
+            return age;
+        }
+        public Integer getSexe() {
+            return sexe;
+        }
+
+        public Date getDateMesure() {
+            return dateMesure;
+        }
+
+        /**
+         * Retourne img après l'avoir calculé s'il est vide
+         * @return img
+         */
+        public float getImg() {
+            if(img == 0){
+                float tailleCm = ((float)taille)/100;
+                img = (float)((1.2 * poids/(tailleCm*tailleCm)) + (0.23 * age) - (10.83 * sexe) - 5.4);
             }
-            img = getImg();
-            if(img<min){
-                message = "trop faible";
-            }else{
-                if(img>max){
-                    message = "trop élevé";
+            return img;
+        }
+        /**
+         * retourne le message correspondant à l'img
+         * @return message "normal", "trop faible", "trop élevé"
+         */
+        public String getMessage() {
+            if(message.equals("")){
+                message = "normal";
+                Integer min = minFemme, max = maxFemme;
+                if(sexe == 1){
+                    min = minHomme;
+                    max = maxHomme;
+                }
+                img = getImg();
+                if(img<min){
+                    message = "trop faible";
+                }else{
+                    if(img>max){
+                        message = "trop élevé";
+                    }
                 }
             }
+            return message;
         }
-        return message;
     }
-
-}

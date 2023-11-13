@@ -1,7 +1,5 @@
 package com.example.coach.vue;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,20 +9,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.coach.R;
+import com.example.coach.*;
 import com.example.coach.controleur.Controle;
-
+/**
+ * Classe d'affichage (activity) MainActivity
+ * Permet le calcul d'un IMG
+ */
 public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        init();
-    }
-
-    // declarations
     private EditText txtPoids;
     private EditText txtTaille;
     private EditText txtAge;
@@ -34,51 +25,55 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgSmiley;
     private Button btnCalc;
     private Controle controle;
-    private Integer poids = 0;
-    private Integer taille = 0;
-    private Integer age = 0;
-    private Integer sexe = 0;
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        init();
+    }
     /**
-     * methode qui permet de faire le lien entre propriété et objet correspondant
+     * Initialisations à l'ouverture :
+     * - récupération des objets graphiques
+     * - création du contrôleur
+     * - demande d'écoute (évenements sur objets graphiques)
      */
-    private void init(){
+    private void init() {
         txtPoids = (EditText) findViewById(R.id.txtPoids) ;
-        txtTaille = (EditText) findViewById(R.id.txtTaille) ;
-        txtAge = (EditText) findViewById(R.id.txtAge) ;
-        rdHomme = (RadioButton) findViewById(R.id.rdHomme) ;
-        rdFemme = (RadioButton) findViewById(R.id.rdFemme) ;
-        lblIMG = (TextView) findViewById(R.id.lblIMG) ;
-        imgSmiley = (ImageView) findViewById(R.id.imgSmiley) ;
-        btnCalc = (Button) findViewById(R.id.btnCalc) ;
+        txtTaille = (EditText) findViewById(R.id.txtTaille);
+        txtAge = (EditText) findViewById(R.id.txtAge);
+        rdHomme = (RadioButton) findViewById(R.id.rdHomme);
+        rdFemme = (RadioButton) findViewById(R.id.rdFemme);
+        lblIMG = (TextView) findViewById(R.id.lblIMG);
+        imgSmiley = (ImageView) findViewById(R.id.imgSmiley);
+        btnCalc = (Button) findViewById(R.id.btnCalc);
         controle = Controle.getInstance(this);
-        ecoutCalcul();
+        ecouteCalcul();
         recupProfil();
     }
 
     /**
-     * methode permettant de verifier les conditions de calculs
+     * Ecoute l'événement clic sur le bouton btnCalc
      */
-    private void ecoutCalcul(){
+    private void ecouteCalcul() {
         btnCalc.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                Integer poids = 0, taille = 0, age = 0, sexe = 0;
                 try {
                     poids = Integer.parseInt(txtPoids.getText().toString());
                     taille = Integer.parseInt(txtTaille.getText().toString());
                     age = Integer.parseInt(txtAge.getText().toString());
-                    afficheResult(poids, taille, age, sexe);
                 }catch(Exception e){}
-                if(rdHomme.isChecked()){
+                if(rdHomme.isChecked()) {
                     sexe = 1;
                 }
                 if(poids == 0 || taille == 0 || age == 0){
                     Toast.makeText(MainActivity.this, "Veuillez saisir tous les champs", Toast.LENGTH_SHORT).show();
+                }else{
+                    afficheResult(poids, taille, age, sexe);
                 }
             }
         });
     }
-
-
     /**
      * Affiche l'image et le message correspondant au calcul de l'img
      * @param poids
@@ -123,5 +118,4 @@ public class MainActivity extends AppCompatActivity {
             btnCalc.performClick();
         }
     }
-
 }
